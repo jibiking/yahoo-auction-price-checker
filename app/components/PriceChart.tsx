@@ -47,12 +47,12 @@ export default function PriceChart({ items }: PriceChartProps) {
     if (active && payload && payload.length) {
       const data = payload[0].payload;
       return (
-        <div className="bg-white p-3 border border-gray-300 rounded-md shadow-lg">
-          <p className="text-sm font-semibold text-gray-900">{data.fullDate}</p>
-          <p className="text-lg font-bold text-green-600">
+        <div className="bg-gray-900/95 backdrop-blur-sm p-3 border border-cyan-500/50 rounded-md shadow-2xl shadow-cyan-500/20">
+          <p className="text-sm font-semibold text-cyan-400">{data.fullDate}</p>
+          <p className="text-lg font-bold text-cyan-300">
             ¥{data.price.toLocaleString()}
           </p>
-          <p className="text-xs text-gray-600 mt-1 max-w-xs truncate">
+          <p className="text-xs text-gray-400 mt-1 max-w-xs truncate">
             {data.title}
           </p>
         </div>
@@ -66,34 +66,36 @@ export default function PriceChart({ items }: PriceChartProps) {
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-      <h2 className="text-xl font-semibold text-gray-900 mb-4">価格推移グラフ</h2>
+    <div className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm rounded-lg shadow-xl border border-cyan-500/20 p-6 mb-8">
+      <h2 className="text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 mb-4">
+        価格推移グラフ
+      </h2>
       <ResponsiveContainer width="100%" height={300}>
         <LineChart
           data={chartData}
           margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
         >
-          <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+          <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
           <XAxis
             dataKey="date"
-            stroke="#6b7280"
-            style={{ fontSize: '12px' }}
+            stroke="#9ca3af"
+            style={{ fontSize: '12px', fill: '#9ca3af' }}
           />
           <YAxis
-            stroke="#6b7280"
-            style={{ fontSize: '12px' }}
+            stroke="#9ca3af"
+            style={{ fontSize: '12px', fill: '#9ca3af' }}
             tickFormatter={(value) => `¥${value.toLocaleString()}`}
           />
           <Tooltip content={<CustomTooltip />} />
-          <Legend />
+          <Legend wrapperStyle={{ color: '#e5e7eb' }} />
           <Line
             type="monotone"
             dataKey="price"
             name="落札価格"
-            stroke="#10b981"
-            strokeWidth={2}
-            dot={{ fill: '#10b981', r: 4 }}
-            activeDot={{ r: 6 }}
+            stroke="#06b6d4"
+            strokeWidth={3}
+            dot={{ fill: '#06b6d4', r: 5, strokeWidth: 2, stroke: '#0e7490' }}
+            activeDot={{ r: 7, fill: '#22d3ee', stroke: '#06b6d4', strokeWidth: 2 }}
           />
         </LineChart>
       </ResponsiveContainer>

@@ -1,5 +1,5 @@
 import * as cheerio from 'cheerio';
-import type { AuctionItem } from '@/types/auction';
+import type { AuctionItem, AuctionImage } from '@/types/auction';
 import { sleep, matchesKeyword } from './utils';
 
 const BASE_URL = 'https://auctions.yahoo.co.jp';
@@ -97,6 +97,7 @@ export async function fetchAuctionDetails(auctionUrl: string): Promise<AuctionIt
       price: jsonData.price || 0,
       endTime: jsonData.endTime || '',
       url: auctionUrl,
+      images: jsonData.images || [],
     };
   } catch (error) {
     console.error(`Error fetching auction details for ${auctionUrl}:`, error);
@@ -171,11 +172,20 @@ function extractJsonData($: cheerio.CheerioAPI): any {
               // endTimeフィールドを取得（優先順位: endTime > endtime）
               const endTime = item.endTime || item.endtime || '';
 
+              // 画像データを抽出
+              const images: AuctionImage[] = (item.img || []).map((img: any) => ({
+                image: img.image || '',
+                thumbnail: img.thumbnail || '',
+                width: img.width || 0,
+                height: img.height || 0,
+              }));
+
               return {
                 title: item.productName || item.title || '',
                 price: parseInt(item.price) || 0,
                 endTime: endTime,
                 status: 'closed',
+                images: images,
               };
             }
           }
@@ -195,11 +205,20 @@ function extractJsonData($: cheerio.CheerioAPI): any {
               // endTimeフィールドを取得（優先順位: endTime > endtime）
               const endTime = item.endTime || item.endtime || '';
 
+              // 画像データを抽出
+              const images: AuctionImage[] = (item.img || []).map((img: any) => ({
+                image: img.image || '',
+                thumbnail: img.thumbnail || '',
+                width: img.width || 0,
+                height: img.height || 0,
+              }));
+
               return {
                 title: item.productName || item.title || '',
                 price: parseInt(item.price) || 0,
                 endTime: endTime,
                 status: 'closed',
+                images: images,
               };
             }
           }
@@ -220,11 +239,20 @@ function extractJsonData($: cheerio.CheerioAPI): any {
               // endTimeフィールドを取得（優先順位: endTime > endtime）
               const endTime = item.endTime || item.endtime || '';
 
+              // 画像データを抽出
+              const images: AuctionImage[] = (item.img || []).map((img: any) => ({
+                image: img.image || '',
+                thumbnail: img.thumbnail || '',
+                width: img.width || 0,
+                height: img.height || 0,
+              }));
+
               return {
                 title: item.productName || item.title || '',
                 price: parseInt(item.price) || 0,
                 endTime: endTime,
                 status: 'closed',
+                images: images,
               };
             }
           }

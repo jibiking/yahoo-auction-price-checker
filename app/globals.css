@@ -1,3 +1,20 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-gradient-to-br from-gray-900 via-gray-800 to-black text-gray-100;
+    @apply min-h-screen;
+  }
+
+  /* ブラウザのオートフィル時の背景色を制御 */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px rgb(17 24 39 / 0.5) inset !important;
+    -webkit-text-fill-color: rgb(243 244 246) !important;
+    transition: background-color 5000s ease-in-out 0s;
+  }
+}
