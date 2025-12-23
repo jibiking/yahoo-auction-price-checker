@@ -345,21 +345,40 @@ async function fetchWithRetry(url: string, retries = 3): Promise<string> {
     try {
       const response = await fetch(url, {
         headers: {
-          'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+          'Accept-Language': 'ja,en-US;q=0.9,en;q=0.8',
+          'Accept-Encoding': 'gzip, deflate, br',
+          'Connection': 'keep-alive',
+          'Upgrade-Insecure-Requests': '1',
+          'Sec-Fetch-Dest': 'document',
+          'Sec-Fetch-Mode': 'navigate',
+          'Sec-Fetch-Site': 'none',
+          'Cache-Control': 'max-age=0',
         },
       });
 
       // 404エラーは即スキップ（リトライしない）
       if (response.status === 404) {
+        console.error(`[fetchWithRetry] 404 Not Found: ${url}`);
         throw new Error(`HTTP error! status: 404 (not found)`);
       }
 
       if (!response.ok) {
+        console.error(`[fetchWithRetry] HTTP ${response.status} for ${url}`);
+        console.error(`[fetchWithRetry] Response headers:`, Object.fromEntries(response.headers.entries()));
+
+        // レスポンスボディの一部を取得（デバッグ用）
+        const text = await response.text();
+        console.error(`[fetchWithRetry] Response body (first 500 chars):`, text.substring(0, 500));
+
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       return await response.text();
     } catch (error) {
+      console.error(`[fetchWithRetry] Attempt ${i + 1}/${retries} failed for ${url}:`, error);
+
       // 404エラーの場合は即座に throw（リトライしない）
       if (error instanceof Error && error.message.includes('404')) {
         throw error;
