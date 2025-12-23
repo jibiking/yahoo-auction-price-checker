@@ -9,7 +9,6 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
-  TooltipProps,
 } from 'recharts';
 import type { AuctionItem } from '@/types/auction';
 
@@ -43,7 +42,7 @@ export default function PriceChart({ items }: PriceChartProps) {
   });
 
   // カスタムツールチップ
-  const CustomTooltip = ({ active, payload }: TooltipProps<number, string>) => {
+  const CustomTooltip = ({ active, payload }: any) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload;
       return (
